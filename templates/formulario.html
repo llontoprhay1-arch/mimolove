@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mimolove — Crea tu página de amor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&family=Fraunces:wght@500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fbf1ea; --wine:#7c2b3f; --wine-deep:#571d2c; --rose:#c9647a; --ink:#3a1f1f; --line:rgba(58,31,31,.18);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:18px;padding-bottom:60px;}
+  .wrap{max-width:520px;margin:0 auto;padding:0 20px;}
+
+  /* HERO DE VENTA */
+  .sell-hero{text-align:center;padding:40px 20px 8px;}
+  .sell-hero h1{font-family:'Petit Formal Script',cursive;font-size:48px;color:var(--wine-deep);margin:0;}
+  .sell-hero p{color:#7a5757;font-style:italic;margin-top:4px;font-size:18px;}
+
+  /* PREVIEW EN VIVO */
+  .preview-shell{
+    margin:22px 0 8px;
+    border-radius:14px;
+    padding:2px;
+    background:linear-gradient(135deg, var(--p-wine,#7c2b3f), var(--p-rose,#c9647a));
+  }
+  .preview-inner{
+    background:var(--p-paper,#fbf1ea);
+    border-radius:12px;
+    padding:28px 20px;
+    text-align:center;
+    transition:background .3s ease;
+  }
+  .preview-label{
+    font-size:12px;letter-spacing:.08em;color:#8a6a6a;text-transform:uppercase;margin-bottom:10px;
+  }
+  .preview-names{
+    font-family:'Petit Formal Script',cursive;
+    font-size:34px;
+    color:var(--p-winedeep,#571d2c);
+    line-height:1.1;
+    min-height:40px;
+  }
+  .preview-sub{font-style:italic;color:#7a5757;font-size:15px;margin-top:4px;}
+  .preview-counter{
+    margin-top:14px;
+    display:inline-block;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:10px 18px;
+    font-family:'Fraunces',serif;
+    color:var(--p-wine,#7c2b3f);
+    font-weight:600;
+    font-size:15px;
+  }
+
+  form{margin-top:26px;}
+  fieldset{border:1px solid var(--line);border-radius:8px;padding:20px;margin-bottom:22px;background:#fffdfa;}
+  legend{font-family:'Fraunces',serif;font-weight:600;color:var(--wine);padding:0 8px;font-size:17px;}
+  label{display:block;margin:14px 0 6px;font-weight:600;font-size:16px;}
+  .hint{font-size:14px;color:#8a6a6a;font-style:italic;margin-top:-3px;margin-bottom:2px;}
+  input[type=text], input[type=date], input[type=url], input[type=file], textarea{
+    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:6px;
+    font-family:'Cormorant Garamond',serif;font-size:16px;background:#fff;color:var(--ink);
+  }
+  textarea{min-height:90px;resize:vertical;}
+  .list-item{display:flex;gap:8px;margin-bottom:8px;}
+  .list-item input{flex:1;}
+  .add-btn{
+    border:1px solid var(--wine);background:#fff;color:var(--wine);border-radius:6px;
+    padding:6px 12px;font-family:'Cormorant Garamond',serif;cursor:pointer;font-size:15px;
+  }
+  .submit-btn{
+    width:100%;padding:16px;background:var(--wine);color:#fff;border:none;border-radius:30px;
+    font-family:'Fraunces',serif;font-size:18px;letter-spacing:.03em;cursor:pointer;margin-top:10px;
+  }
+  .submit-btn:hover{background:var(--wine-deep);}
+  .required{color:var(--rose);}
+  .foto-item{border:1px dashed var(--line);border-radius:6px;padding:10px;margin-bottom:10px;}
+
+  /* SELECTOR DE PALETA */
+  .paletas{display:flex;gap:12px;margin-top:8px;}
+  .paleta-opt{flex:1;cursor:pointer;text-align:center;position:relative;}
+  .paleta-opt input{position:absolute;opacity:0;pointer-events:none;}
+  .swatch{
+    height:46px;border-radius:8px;border:2px solid transparent;margin-bottom:6px;
+  }
+  .paleta-opt input:checked + .swatch{border-color:var(--ink);}
+  .paleta-opt span.name{font-size:14px;color:#5b3a3a;}
+  .swatch.rosa{background:linear-gradient(135deg,#7c2b3f,#c9647a,#b98a4a);}
+  .swatch.nocturno{background:linear-gradient(135deg,#2f3577,#6d74c9,#8f8fd6);}
+  .swatch.dorado{background:linear-gradient(135deg,#8a6a1f,#c9a24a,#e0c068);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="sell-hero">
+    <h1>Mimolove</h1>
+    <p>Un regalo digital para decirle todo lo que sientes</p>
+  </div>
+
+  <!-- VISTA PREVIA EN VIVO -->
+  <div class="preview-shell" id="previewShell">
+    <div class="preview-inner" id="previewInner">
+      <div class="preview-label">así se verá tu página</div>
+      <div class="preview-names" id="previewNames">Ana <span style="color:var(--p-rose,#c9647a);">&amp;</span> Luis</div>
+      <div class="preview-sub">una pequeña página para guardar lo suyo</div>
+      <div class="preview-counter" id="previewCounter">Juntos desde hace 0 días</div>
+    </div>
+  </div>
+
+  <form action="/generar" method="POST" enctype="multipart/form-data">
+
+    <fieldset>
+      <legend>Elige el estilo</legend>
+      <div class="paletas">
+        <label class="paleta-opt">
+          <input type="radio" name="paleta" value="rosa" checked>
+          <div class="swatch rosa"></div>
+          <span class="name">Rosa romántico</span>
+        </label>
+        <label class="paleta-opt">
+          <input type="radio" name="paleta" value="nocturno">
+          <div class="swatch nocturno"></div>
+          <span class="name">Azul nocturno</span>
+        </label>
+        <label class="paleta-opt">
+          <input type="radio" name="paleta" value="dorado">
+          <div class="swatch dorado"></div>
+          <span class="name">Dorado elegante</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Los dos</legend>
+      <label>Tu nombre <span class="required">*</span></label>
+      <input type="text" name="nombre1" id="nombre1" required>
+
+      <label>Nombre de tu pareja <span class="required">*</span></label>
+      <input type="text" name="nombre2" id="nombre2" required>
+
+      <label>Apodo cariñoso (opcional)</label>
+      <input type="text" name="apodo" placeholder="ej. Amorcito">
+
+      <label>Fecha en que empezaron <span class="required">*</span></label>
+      <input type="date" name="fecha_inicio" id="fecha_inicio" required>
+    </fieldset>
+
+    <fieldset>
+      <legend>Fotos</legend>
+      <p class="hint">Sube hasta 6 fotos, en el orden en que quieras que aparezcan.</p>
+      <div id="fotos-container">
+        <div class="foto-item">
+          <input type="file" name="fotos" accept="image/*">
+          <input type="text" name="captions" placeholder="Descripción (opcional)" style="margin-top:6px;">
+        </div>
+      </div>
+      <button type="button" class="add-btn" id="addFoto">+ Agregar otra foto</button>
+    </fieldset>
+
+    <fieldset>
+      <legend>La carta</legend>
+      <label>Escribe tu carta <span class="required">*</span></label>
+      <p class="hint">Separa los párrafos con una línea en blanco.</p>
+      <textarea name="carta" required style="min-height:200px;"></textarea>
+
+      <label>Frase de cierre / firma (opcional)</label>
+      <input type="text" name="firma_carta" placeholder="ej. Feliz aniversario, mi amor.">
+    </fieldset>
+
+    <fieldset>
+      <legend>Cosas que quieren hacer juntos</legend>
+      <div id="planes-container">
+        <div class="list-item"><input type="text" name="plan"></div>
+        <div class="list-item"><input type="text" name="plan"></div>
+        <div class="list-item"><input type="text" name="plan"></div>
+      </div>
+      <button type="button" class="add-btn" data-target="planes-container" data-name="plan">+ Agregar</button>
+    </fieldset>
+
+    <fieldset>
+      <legend>Lo que más amas de tu pareja</legend>
+      <div id="amo-container">
+        <div class="list-item"><input type="text" name="amo"></div>
+        <div class="list-item"><input type="text" name="amo"></div>
+        <div class="list-item"><input type="text" name="amo"></div>
+      </div>
+      <button type="button" class="add-btn" data-target="amo-container" data-name="amo">+ Agregar</button>
+    </fieldset>
+
+    <fieldset>
+      <legend>Canción y vale</legend>
+      <label>Link de YouTube de la canción (opcional)</label>
+      <input type="url" name="youtube_url" placeholder="https://youtu.be/...">
+
+      <label>Texto del vale/cupón (opcional)</label>
+      <input type="text" name="cupon_texto" placeholder="ej. Vale por elegir el restaurante">
+    </fieldset>
+
+    <button type="submit" class="submit-btn">Crear mi página ❤️</button>
+  </form>
+</div>
+
+<script>
+  // ---- AGREGAR CAMPOS DINAMICOS ----
+  document.getElementById('addFoto').addEventListener('click', function(){
+    const cont = document.getElementById('fotos-container');
+    if(cont.children.length >= 6) return;
+    const div = document.createElement('div');
+    div.className = 'foto-item';
+    div.innerHTML = '<input type="file" name="fotos" accept="image/*"><input type="text" name="captions" placeholder="Descripción (opcional)" style="margin-top:6px;">';
+    cont.appendChild(div);
+  });
+
+  document.querySelectorAll('.add-btn[data-target]').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      const cont = document.getElementById(btn.dataset.target);
+      const div = document.createElement('div');
+      div.className = 'list-item';
+      div.innerHTML = `<input type="text" name="${btn.dataset.name}">`;
+      cont.appendChild(div);
+    });
+  });
+
+  // ---- VISTA PREVIA EN VIVO ----
+  const previewNames = document.getElementById('previewNames');
+  const previewCounter = document.getElementById('previewCounter');
+  const previewShell = document.getElementById('previewShell');
+  const previewInner = document.getElementById('previewInner');
+
+  function actualizarNombres(){
+    const n1 = document.getElementById('nombre1').value.trim() || 'Ana';
+    const n2 = document.getElementById('nombre2').value.trim() || 'Luis';
+    previewNames.innerHTML = `${n1} <span style="color:var(--p-rose,#c9647a);">&amp;</span> ${n2}`;
+  }
+
+  function actualizarContador(){
+    const val = document.getElementById('fecha_inicio').value;
+    if(!val){ previewCounter.textContent = 'Juntos desde hace 0 días'; return; }
+    const inicio = new Date(val + 'T00:00:00');
+    const hoy = new Date();
+    let dias = Math.floor((hoy - inicio) / 86400000);
+    if(dias < 0){ previewCounter.textContent = 'Elige una fecha en el pasado'; return; }
+    previewCounter.textContent = `Juntos desde hace ${dias} día${dias===1?'':'s'}`;
+  }
+
+  document.getElementById('nombre1').addEventListener('input', actualizarNombres);
+  document.getElementById('nombre2').addEventListener('input', actualizarNombres);
+  document.getElementById('fecha_inicio').addEventListener('input', actualizarContador);
+
+  // ---- PALETA EN VIVO ----
+  const PALETAS_JS = {
+    rosa:      {wine:'#7c2b3f', winedeep:'#571d2c', rose:'#c9647a', paper:'#fbf1ea'},
+    nocturno:  {wine:'#2f3577', winedeep:'#1b1e4a', rose:'#6d74c9', paper:'#f2f0f6'},
+    dorado:    {wine:'#8a6a1f', winedeep:'#5c4712', rose:'#c9a24a', paper:'#faf6ec'},
+  };
+  function aplicarPaleta(nombre){
+    const p = PALETAS_JS[nombre] || PALETAS_JS.rosa;
+    previewShell.style.setProperty('--p-wine', p.wine);
+    previewShell.style.setProperty('--p-rose', p.rose);
+    previewInner.style.setProperty('--p-winedeep', p.winedeep);
+    previewInner.style.setProperty('--p-paper', p.paper);
+    previewInner.style.background = p.paper;
+    actualizarNombres();
+  }
+  document.querySelectorAll('input[name=paleta]').forEach(radio=>{
+    radio.addEventListener('change', ()=>aplicarPaleta(radio.value));
+  });
+
+  // Inicializar
+  aplicarPaleta('rosa');
+  actualizarContador();
+</script>
+</body>
+</html>

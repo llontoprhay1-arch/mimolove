@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ nombre1 }} &amp; {{ nombre2 }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Petit+Formal+Script&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:{{ colores.paper }};
+    --paper-deep:{{ colores.paper_deep }};
+    --ink:{{ colores.ink }};
+    --wine:{{ colores.wine }};
+    --wine-deep:{{ colores.wine_deep }};
+    --rose:{{ colores.rose }};
+    --gold:{{ colores.gold }};
+    --line: {{ colores.line }};
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(201,100,122,.10), transparent 55%),
+      radial-gradient(ellipse at 85% 30%, rgba(185,138,74,.10), transparent 50%);
+    color:var(--ink);
+    font-family:'Cormorant Garamond', serif;
+    font-size:19px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:0 24px 80px;}
+
+  /* HERO */
+  .hero{
+    padding:64px 24px 40px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .eyebrow-date{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    color:var(--rose);
+    font-size:17px;
+    letter-spacing:.02em;
+    margin-bottom:6px;
+  }
+  .names{
+    font-family:'Petit Formal Script', cursive;
+    font-weight:400;
+    font-size:clamp(48px,13vw,72px);
+    line-height:1.05;
+    color:var(--wine-deep);
+    margin:8px 0 4px;
+  }
+  .names .amp{color:var(--rose);}
+  .hero-sub{
+    max-width:380px;
+    margin:14px auto 0;
+    color:#5b3a3a;
+    font-size:18px;
+    font-style:italic;
+  }
+
+  /* COUNTER */
+  .counter-card{
+    background:linear-gradient(180deg,#ffffff,var(--paper-deep));
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:26px 20px;
+    margin:28px auto 0;
+    max-width:420px;
+    box-shadow:0 18px 40px -28px rgba(87,29,44,.55);
+  }
+  .counter-label{
+    font-family:'Fraunces',serif;
+    font-variant:small-caps;
+    letter-spacing:.03em;
+    color:var(--wine);
+    font-size:15px;
+    text-align:center;
+    margin-bottom:2px;
+  }
+  .counter-years{
+    text-align:center;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:26px;
+    color:var(--ink);
+    margin-bottom:14px;
+  }
+  .counter-grid{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+  }
+  .counter-unit{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:10px 6px;
+    min-width:62px;
+    text-align:center;
+  }
+  .counter-unit .num{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:24px;
+    color:var(--wine-deep);
+    display:block;
+    font-variant-numeric:tabular-nums;
+  }
+  .counter-unit .lbl{
+    font-size:12px;
+    color:#8a6a6a;
+    letter-spacing:.03em;
+  }
+
+  /* POLAROID */
+  .polaroid{
+    background:#fff;
+    padding:14px 14px 46px;
+    border-radius:2px;
+    box-shadow:0 22px 40px -22px rgba(58,31,31,.45);
+    margin:44px auto;
+    max-width:380px;
+    position:relative;
+  }
+  .polaroid img{width:100%;display:block;border-radius:1px;}
+  .polaroid.tilt-l{transform:rotate(-3deg);}
+  .polaroid.tilt-r{transform:rotate(2.5deg);}
+  .polaroid-cap{
+    position:absolute;
+    bottom:12px;left:0;right:0;
+    text-align:center;
+    font-family:'Petit Formal Script',cursive;
+    font-size:22px;
+    color:var(--wine);
+  }
+
+  /* SECTION HEADS */
+  .section{margin:56px 0;}
+  .section-head{
+    text-align:center;
+    margin-bottom:26px;
+  }
+  .section-kicker{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    color:var(--rose);
+    font-size:16px;
+  }
+  .section-title{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:32px;
+    color:var(--wine-deep);
+    margin:2px 0 0;
+  }
+
+  /* LETTER */
+  .letter{
+    background:#fffdfa;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:38px 30px;
+    box-shadow:0 20px 44px -30px rgba(58,31,31,.5);
+  }
+  .letter p{margin:0 0 18px;font-size:19px;}
+  .letter p:last-child{margin-bottom:0;}
+  .letter .signoff{
+    font-family:'Petit Formal Script',cursive;
+    font-size:28px;
+    color:var(--wine);
+    margin-top:22px;
+  }
+
+  /* LISTS */
+  .list-card{
+    background:linear-gradient(180deg,#fff,var(--paper-deep));
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:30px 28px;
+  }
+  ul.soft-list{list-style:none;margin:0;padding:0;}
+  ul.soft-list li{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    padding:11px 0;
+    border-bottom:1px solid var(--line);
+    font-size:19px;
+  }
+  ul.soft-list li:last-child{border-bottom:none;}
+  ul.soft-list li::before{
+    content:'';
+    flex:0 0 6px;
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--rose);
+    margin-top:9px;
+  }
+
+  /* SONG */
+  .song-frame{
+    border-radius:6px;
+    overflow:hidden;
+    box-shadow:0 20px 44px -28px rgba(58,31,31,.5);
+    border:1px solid var(--line);
+  }
+  .song-frame iframe{display:block;width:100%;height:230px;border:0;}
+  .song-thumb{position:relative;display:block;text-decoration:none;}
+  .song-play{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:60px;height:60px;
+    background:rgba(87,29,44,.85);
+    color:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:22px;
+    box-shadow:0 8px 20px rgba(0,0,0,.3);
+  }
+  .song-note{
+    text-align:center;
+    font-style:italic;
+    color:#7a5757;
+    margin-top:12px;
+    font-size:17px;
+  }
+
+  /* COUPON */
+  .coupon{
+    border:2px dashed var(--wine);
+    border-radius:8px;
+    background:#fffaf5;
+    padding:26px 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    position:relative;
+  }
+  .coupon::before,.coupon::after{
+    content:'';
+    position:absolute;
+    width:22px;height:22px;
+    background:var(--paper);
+    border-radius:50%;
+    top:50%;transform:translateY(-50%);
+  }
+  .coupon::before{left:-13px;}
+  .coupon::after{right:-13px;}
+  .coupon-text .k{
+    font-size:13px;
+    letter-spacing:.06em;
+    color:var(--rose);
+  }
+  .coupon-text .v{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:20px;
+    color:var(--ink);
+  }
+  .coupon-btn{
+    flex:0 0 auto;
+    background:var(--wine);
+    color:#fff;
+    border:none;
+    padding:11px 20px;
+    border-radius:30px;
+    font-family:'Cormorant Garamond',serif;
+    font-size:16px;
+    letter-spacing:.02em;
+    cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .coupon-btn:hover{background:var(--wine-deep);}
+  .coupon-btn:active{transform:scale(.96);}
+  .coupon-btn[disabled]{background:#b7a89f;cursor:default;}
+
+  /* WHEEL */
+  .wheel-wrap{text-align:center;}
+  .wheel-shell{
+    position:relative;
+    width:280px;height:280px;
+    margin:0 auto 22px;
+  }
+  .wheel-pin{
+    position:absolute;
+    top:-4px;left:50%;
+    transform:translateX(-50%);
+    width:0;height:0;
+    border-left:12px solid transparent;
+    border-right:12px solid transparent;
+    border-top:20px solid var(--wine-deep);
+    z-index:3;
+  }
+  #wheel{
+    width:100%;height:100%;
+    border-radius:50%;
+    display:block;
+    box-shadow:0 0 0 8px #fff, 0 20px 44px -20px rgba(58,31,31,.6);
+    transition:transform 4.2s cubic-bezier(.17,.67,.13,1);
+  }
+  .wheel-center{
+    position:absolute;top:50%;left:50%;
+    width:52px;height:52px;
+    transform:translate(-50%,-50%);
+    background:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:22px;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+    z-index:2;
+  }
+  .spin-btn{
+    background:var(--wine);
+    color:#fff;
+    border:none;
+    padding:13px 34px;
+    border-radius:30px;
+    font-family:'Fraunces',serif;
+    letter-spacing:.06em;
+    font-size:15px;
+    cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .spin-btn:hover{background:var(--wine-deep);}
+  .spin-btn:disabled{background:#c9b8ae;cursor:default;}
+  .wheel-result{
+    margin-top:18px;
+    min-height:70px;
+  }
+  .wheel-result .q{
+    font-family:'Fraunces',serif;
+    font-size:22px;
+    color:var(--wine-deep);
+    margin-bottom:12px;
+  }
+  .wheel-yn{display:flex;gap:12px;justify-content:center;}
+  .wheel-yn button{
+    border-radius:30px;
+    padding:9px 22px;
+    font-family:'Cormorant Garamond',serif;
+    font-size:16px;
+    cursor:pointer;
+  }
+  .wheel-yn .yes{background:var(--wine);color:#fff;border:none;}
+  .wheel-yn .no{background:transparent;border:1px solid var(--line);color:var(--ink);}
+  .wheel-yn button:active{transform:scale(.96);}
+  .again{
+    display:inline-block;
+    margin-top:14px;
+    color:var(--rose);
+    font-style:italic;
+    text-decoration:underline;
+    cursor:pointer;
+    font-size:15px;
+    background:none;border:none;
+  }
+
+  /* CLOSING */
+  .closing{
+    text-align:center;
+    padding:64px 20px 20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .closing p.line1{
+    font-family:'Fraunces',serif;
+    font-size:28px;
+    color:var(--wine-deep);
+    margin:0;
+  }
+  .closing p.line2{
+    font-family:'Petit Formal Script',cursive;
+    font-size:40px;
+    color:var(--rose);
+    margin:10px 0 0;
+  }
+  .petal{
+    position:fixed;
+    top:-24px;
+    font-size:18px;
+    opacity:.85;
+    pointer-events:none;
+    z-index:50;
+    animation-name:fall;
+    animation-timing-function:linear;
+    animation-fill-mode:forwards;
+  }
+  @keyframes fall{
+    to{ transform: translateY(115vh) rotate(300deg); opacity:.3; }
+  }
+
+  footer.credit{
+    text-align:center;
+    font-size:13px;
+    color:#a08b8b;
+    padding:10px 0 40px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    #wheel{transition:none;}
+    .petal{display:none;}
+  }
+</style>
+<body>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow-date">{{ fecha_texto }}</div>
+    <h1 class="names">{{ nombre1 }} <span class="amp">&amp;</span> {{ nombre2 }}</h1>
+    <p class="hero-sub">Una pequeña página para guardar lo nuestro.</p>
+
+    <div class="counter-card">
+      <div class="counter-label">Juntos desde hace</div>
+      <div class="counter-years" id="yearsLabel">{{ tiempo_texto }}</div>
+      <div class="counter-grid">
+        <div class="counter-unit"><span class="num" id="cu-d">0</span><span class="lbl">días</span></div>
+        <div class="counter-unit"><span class="num" id="cu-h">00</span><span class="lbl">horas</span></div>
+        <div class="counter-unit"><span class="num" id="cu-m">00</span><span class="lbl">min</span></div>
+        <div class="counter-unit"><span class="num" id="cu-s">00</span><span class="lbl">seg</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERIA DE FOTOS -->
+  {% for foto in fotos %}
+  <div class="polaroid {{ 'tilt-l' if loop.index0 % 2 == 0 else 'tilt-r' }}">
+    <img src="data:image/jpeg;base64,{{ foto.base64 }}" alt="{{ nombre1 }} y {{ nombre2 }}">
+    {% if foto.caption %}<div class="polaroid-cap">{{ foto.caption }}</div>{% endif %}
+  </div>
+  {% endfor %}
+
+  <!-- CARTA -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-kicker">para mi {{ apodo or nombre2 }}</div>
+      <h2 class="section-title">Una carta</h2>
+    </div>
+    <div class="letter">
+      {% for parrafo in carta_parrafos %}
+      <p>{{ parrafo }}</p>
+      {% endfor %}
+      {% if firma_carta %}<p class="signoff">{{ firma_carta }}</p>{% endif %}
+    </div>
+  </section>
+
+  <!-- LISTA COSAS QUE HACER -->
+  {% if lista_planes %}
+  <section class="section">
+    <div class="section-head">
+      <div class="section-kicker">cosas que quiero hacer contigo</div>
+      <h2 class="section-title">Nuestra lista</h2>
+    </div>
+    <div class="list-card">
+      <ul class="soft-list">
+        {% for item in lista_planes %}<li>{{ item }}</li>{% endfor %}
+      </ul>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- LO QUE AMO -->
+  {% if lista_amo %}
+  <section class="section">
+    <div class="section-head">
+      <div class="section-kicker">lo que más amo de ti</div>
+      <h2 class="section-title">{{ nombre2 }}</h2>
+    </div>
+    <div class="list-card">
+      <ul class="soft-list">
+        {% for item in lista_amo %}<li>{{ item }}</li>{% endfor %}
+      </ul>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- CANCION -->
+  {% if youtube_id %}
+  <section class="section">
+    <div class="section-head">
+      <div class="section-kicker">para escuchar juntos</div>
+      <h2 class="section-title">Nuestra canción</h2>
+    </div>
+    <a class="song-frame song-thumb" href="https://youtu.be/{{ youtube_id }}" target="_blank" rel="noopener">
+      <img src="https://img.youtube.com/vi/{{ youtube_id }}/hqdefault.jpg" alt="Nuestra canción" style="display:block;width:100%;">
+      <span class="song-play">▶</span>
+    </a>
+    <p class="song-note">toca la imagen para escucharla en YouTube</p>
+  </section>
+  {% endif %}
+
+  <!-- CUPON -->
+  {% if cupon_texto %}
+  <section class="section">
+    <div class="section-head">
+      <div class="section-kicker">para ti</div>
+      <h2 class="section-title">Un vale</h2>
+    </div>
+    <div class="coupon">
+      <div class="coupon-text">
+        <div class="k">CANJÉALO CUANDO QUIERAS · SOLO UNA VEZ</div>
+        <div class="v">{{ cupon_texto }}</div>
+      </div>
+      <button class="coupon-btn" id="couponBtn" onclick="redeemCoupon()">Canjear</button>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- RULETA -->
+  <section class="section wheel-wrap">
+    <div class="section-head">
+      <div class="section-kicker">para ti</div>
+      <h2 class="section-title">La ruleta tiene una pregunta</h2>
+    </div>
+    <p style="margin-top:-14px;color:#7a5757;">Gira... y responde con el corazón</p>
+
+    <div class="wheel-shell">
+      <div class="wheel-pin"></div>
+      <svg id="wheel" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="wheel-center">❤</div>
+    </div>
+
+    <button class="spin-btn" id="spinBtn" onclick="spinWheel()">GIRAR</button>
+    <p style="font-size:14px;color:#a08b8b;margin-top:10px;">Puedes girar las veces que quieras</p>
+
+    <div class="wheel-result" id="wheelResult"></div>
+  </section>
+
+  <!-- CIERRE -->
+  <section class="closing" id="closing">
+    <p class="line1">{{ nombre2 }}, por todo lo que somos.</p>
+    <p class="line2">{{ mensaje_cierre or "Te amo." }}</p>
+  </section>
+
+  <footer class="credit">hecho con amor por {{ nombre1 }}, para {{ nombre2 }} · Mimolove</footer>
+</div>
+
+<script>
+  // ---- CONTADOR EN VIVO ----
+  const start = new Date({{ anio }}, {{ mes_idx }}, {{ dia }}, 0, 0, 0);
+  function pad(n){return n.toString().padStart(2,'0');}
+  function tick(){
+    const now = new Date();
+    let diff = Math.floor((now - start)/1000);
+    const days = Math.floor(diff/86400);
+    const hours = Math.floor((diff%86400)/3600);
+    const mins = Math.floor((diff%3600)/60);
+    const secs = diff%60;
+    document.getElementById('cu-d').textContent = days;
+    document.getElementById('cu-h').textContent = pad(hours);
+    document.getElementById('cu-m').textContent = pad(mins);
+    document.getElementById('cu-s').textContent = pad(secs);
+  }
+  tick();
+  setInterval(tick,1000);
+
+  // ---- CUPON ----
+  function redeemCoupon(){
+    const btn = document.getElementById('couponBtn');
+    if(!btn) return;
+    btn.textContent = 'Canjeado ✓';
+    btn.disabled = true;
+  }
+
+  // ---- RULETA ----
+  const options = [
+    {label:'Baile', q:'¿Bailamos una canción ahora mismo?'},
+    {label:'Cena', q:'¿Te preparo una cena especial?'},
+    {label:'Cine', q:'¿Vemos una película esta semana?'},
+    {label:'Helado', q:'¿Te invito un helado?'},
+    {label:'Picnic', q:'¿Hacemos un picnic pronto?'}
+  ];
+  const colors = [{{ colores.rueda|join(', ') }}];
+  const svg = document.getElementById('wheel');
+  const cx=100, cy=100, r=98;
+  const n = options.length;
+  const slice = 360/n;
+
+  function polar(cxp,cyp,rad,angleDeg){
+    const a = (angleDeg-90) * Math.PI/180;
+    return [cxp + rad*Math.cos(a), cyp + rad*Math.sin(a)];
+  }
+  let svgHTML = '';
+  for(let i=0;i<n;i++){
+    const a0 = i*slice, a1 = (i+1)*slice;
+    const [x0,y0] = polar(cx,cy,r,a0);
+    const [x1,y1] = polar(cx,cy,r,a1);
+    const largeArc = slice>180?1:0;
+    svgHTML += `<path d="M${cx},${cy} L${x0.toFixed(2)},${y0.toFixed(2)} A${r},${r} 0 ${largeArc} 1 ${x1.toFixed(2)},${y1.toFixed(2)} Z" fill="${colors[i%colors.length]}" stroke="#fff" stroke-width="1.5"/>`;
+    const midAngle = a0 + slice/2;
+    const [lx,ly] = polar(cx,cy,r*0.62,midAngle);
+    svgHTML += `<text x="${lx.toFixed(2)}" y="${ly.toFixed(2)}" fill="#fff" font-size="10.5" font-family="Cormorant Garamond, serif" text-anchor="middle" dominant-baseline="middle" transform="rotate(${midAngle},${lx.toFixed(2)},${ly.toFixed(2)})">${options[i].label}</text>`;
+  }
+  svg.innerHTML = svgHTML;
+
+  let currentRotation = 0;
+  let spinning = false;
+  function spinWheel(){
+    if(spinning) return;
+    spinning = true;
+    document.getElementById('spinBtn').disabled = true;
+    document.getElementById('wheelResult').innerHTML = '';
+
+    const chosenIndex = Math.floor(Math.random()*n);
+    const sliceMid = chosenIndex*slice + slice/2;
+    const extraSpins = 4*360;
+    const targetRotation = extraSpins + (360 - sliceMid);
+    const newTotal = currentRotation + targetRotation;
+    svg.style.transform = `rotate(${newTotal}deg)`;
+    currentRotation = newTotal;
+
+    setTimeout(()=>{
+      spinning = false;
+      document.getElementById('spinBtn').disabled = false;
+      const chosen = options[chosenIndex];
+      document.getElementById('wheelResult').innerHTML = `
+        <div style="font-size:13px;letter-spacing:.05em;color:var(--rose);margin-bottom:6px;">LA RULETA DECIDIÓ: ${chosen.label.toUpperCase()}</div>
+        <div class="q">${chosen.q}</div>
+        <div class="wheel-yn">
+          <button class="yes" onclick="answerWheel(true)">Sí</button>
+          <button class="no" onclick="answerWheel(false)">No</button>
+        </div>
+      `;
+    }, 4300);
+  }
+  function answerWheel(yes){
+    const div = document.getElementById('wheelResult');
+    div.innerHTML = `<div class="q">${yes? '¡Prometido! 🤍' : 'Está bien, será en otra ocasión 🤍'}</div><button class="again" onclick="document.getElementById('wheelResult').innerHTML='';">girar de nuevo</button>`;
+  }
+
+  // ---- PETALOS AL LLEGAR AL CIERRE ----
+  let petalsFired = false;
+  const closingEl = document.getElementById('closing');
+  const petalChars = ['❤','✿','❀','♡'];
+  function firePetals(){
+    if(petalsFired) return;
+    petalsFired = true;
+    for(let i=0;i<26;i++){
+      const p = document.createElement('div');
+      p.className='petal';
+      p.textContent = petalChars[Math.floor(Math.random()*petalChars.length)];
+      p.style.left = Math.random()*100+'vw';
+      p.style.color = Math.random()>0.5 ? '#c9647a' : '#b98a4a';
+      p.style.animationDuration = (3.5+Math.random()*2.5)+'s';
+      p.style.fontSize = (14+Math.random()*12)+'px';
+      p.style.animationDelay = (Math.random()*1.2)+'s';
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(), 7000);
+    }
+  }
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting) firePetals();
+    });
+  }, {threshold:0.5});
+  observer.observe(closingEl);
+</script>
+
+</body>
+</html>
