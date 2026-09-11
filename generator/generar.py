@@ -89,10 +89,15 @@ def generar_pagina(datos, fotos_paths, output_path, template_dir=".", template_n
       carta_parrafos (lista de strings), firma_carta (opcional),
       lista_planes (lista de strings), lista_amo (lista de strings),
       youtube_id (opcional), cupon_texto (opcional),
-      mensaje_cierre (opcional)
+      mensaje_cierre (opcional), paleta (opcional),
+      opciones_ruleta (lista de strings, opcional),
+      fecha_desbloqueo_iso (string tipo "2026-01-01T00:00", opcional),
+      password_sorpresa (string, opcional)
     fotos_paths: lista de tuplas (ruta_archivo, caption_opcional)
     output_path: dónde guardar el HTML final
     """
+    import json
+
     env = Environment(loader=FileSystemLoader(template_dir))
     tpl = env.get_template(template_name)
 
@@ -107,12 +112,29 @@ def generar_pagina(datos, fotos_paths, output_path, template_dir=".", template_n
     fecha_texto = f"{datos['dia']} de {MESES_ES[datos['mes_idx']]}, {datos['anio']}"
     tiempo_texto = calcular_tiempo_texto(datos['anio'], datos['mes_idx'], datos['dia'])
 
+    # ---- Ruleta personalizada ----
+    opciones_ruleta = datos.get("opciones_ruleta") or ["Baile", "Cena", "Cine", "Helado", "Picnic"]
+    opciones_objs = [
+        {"label": op, "q": f"¿Qué tal si hacemos esto: {op.lower()}?"}
+        for op in opciones_ruleta
+    ]
+    opciones_ruleta_json = json.dumps(opciones_objs, ensure_ascii=False)
+
+    # ---- Modo sorpresa (bloqueo por fecha y/o contraseña) ----
+    fecha_desbloqueo_iso = datos.get("fecha_desbloqueo_iso")
+    password_sorpresa = datos.get("password_sorpresa")
+    unlock_datetime_js = f'new Date("{fecha_desbloqueo_iso}")' if fecha_desbloqueo_iso else "null"
+    unlock_password_js = json.dumps(password_sorpresa, ensure_ascii=False) if password_sorpresa else "null"
+
     contexto = {
         **datos,
         "fecha_texto": fecha_texto,
         "tiempo_texto": tiempo_texto,
         "fotos": fotos,
         "colores": PALETAS.get(datos.get("paleta", "rosa"), PALETAS["rosa"]),
+        "opciones_ruleta_json": opciones_ruleta_json,
+        "unlock_datetime_js": unlock_datetime_js,
+        "unlock_password_js": unlock_password_js,
     }
 
     html = tpl.render(**contexto)

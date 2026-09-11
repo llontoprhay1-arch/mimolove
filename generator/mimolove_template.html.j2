@@ -31,7 +31,7 @@
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:560px;margin:0 auto;padding:0 24px 80px;}
+  .wrap{max-width:560px;margin:0 auto;padding:0 24px 80px;display:none;}
 
   /* HERO */
   .hero{
@@ -404,6 +404,35 @@
     padding:10px 0 40px;
   }
 
+  /* MODO SORPRESA */
+  .lock-screen{
+    position:fixed;inset:0;
+    background:var(--paper);
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:100;
+    padding:20px;
+  }
+  .lock-inner{max-width:360px;text-align:center;}
+  .lock-heart{font-size:40px;color:var(--rose);margin-bottom:10px;}
+  .lock-title{font-family:'Fraunces',serif;font-weight:500;font-size:24px;color:var(--wine-deep);margin:0 0 16px;}
+  .lock-countdown{
+    display:none;
+    font-family:'Fraunces',serif;font-size:22px;color:var(--wine);
+    margin-bottom:18px;font-variant-numeric:tabular-nums;
+  }
+  .lock-password-box{display:none;}
+  .lock-password-box input{
+    width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:6px;
+    font-family:'Cormorant Garamond',serif;font-size:16px;text-align:center;margin-bottom:12px;
+  }
+  .lock-btn{
+    background:var(--wine);color:#fff;border:none;padding:12px 28px;border-radius:30px;
+    font-family:'Fraunces',serif;font-size:16px;cursor:pointer;
+  }
+  .lock-btn:hover{background:var(--wine-deep);}
+  .lock-error{color:#a33;font-size:14px;margin-top:10px;min-height:18px;}
+
   @media (prefers-reduced-motion: reduce){
     #wheel{transition:none;}
     .petal{display:none;}
@@ -411,7 +440,20 @@
 </style>
 <body>
 
-<div class="wrap">
+<div id="lockScreen" class="lock-screen">
+  <div class="lock-inner">
+    <div class="lock-heart">❤</div>
+    <h2 class="lock-title">Un momento especial te espera…</h2>
+    <div id="lockCountdown" class="lock-countdown"></div>
+    <div id="lockPasswordBox" class="lock-password-box">
+      <input type="text" id="lockPasswordInput" placeholder="Escribe la palabra secreta">
+      <button type="button" class="lock-btn" onclick="intentarDesbloquear()">Abrir</button>
+      <p id="lockError" class="lock-error"></p>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="mainContent">
 
   <!-- HERO -->
   <section class="hero">
@@ -572,13 +614,7 @@
   }
 
   // ---- RULETA ----
-  const options = [
-    {label:'Baile', q:'¿Bailamos una canción ahora mismo?'},
-    {label:'Cena', q:'¿Te preparo una cena especial?'},
-    {label:'Cine', q:'¿Vemos una película esta semana?'},
-    {label:'Helado', q:'¿Te invito un helado?'},
-    {label:'Picnic', q:'¿Hacemos un picnic pronto?'}
-  ];
+  const options = {{ opciones_ruleta_json }};
   const colors = [{{ colores.rueda|join(', ') }}];
   const svg = document.getElementById('wheel');
   const cx=100, cy=100, r=98;
@@ -663,6 +699,73 @@
     });
   }, {threshold:0.5});
   observer.observe(closingEl);
+
+  // ---- MODO SORPRESA (bloqueo por fecha y/o contraseña) ----
+  const UNLOCK_AT = {{ unlock_datetime_js }};
+  const UNLOCK_PASSWORD = {{ unlock_password_js }};
+  let countdownInterval = null;
+
+  function tiempoListo(){
+    return !UNLOCK_AT || new Date() >= UNLOCK_AT;
+  }
+  function mostrarContenido(){
+    document.getElementById('lockScreen').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    if(countdownInterval) clearInterval(countdownInterval);
+  }
+  function mostrarCandado(){
+    document.getElementById('lockScreen').style.display = 'flex';
+    document.getElementById('mainContent').style.display = 'none';
+    if(UNLOCK_AT){
+      document.getElementById('lockCountdown').style.display = 'block';
+      actualizarCuentaRegresiva();
+      countdownInterval = setInterval(actualizarCuentaRegresiva, 1000);
+    }
+    if(UNLOCK_PASSWORD){
+      document.getElementById('lockPasswordBox').style.display = 'block';
+    }
+  }
+  function actualizarCuentaRegresiva(){
+    const diff = UNLOCK_AT - new Date();
+    const el = document.getElementById('lockCountdown');
+    if(diff <= 0){
+      el.textContent = '¡Ya casi! toca abrir 👇';
+      clearInterval(countdownInterval);
+      if(!UNLOCK_PASSWORD) mostrarContenido();
+      return;
+    }
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor((diff%86400000)/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    el.textContent = `${d}d ${h}h ${m}m ${s}s`;
+  }
+  function intentarDesbloquear(){
+    const val = (document.getElementById('lockPasswordInput').value || '').trim().toLowerCase();
+    const errEl = document.getElementById('lockError');
+    if(!tiempoListo()){
+      errEl.textContent = 'Todavía no es el momento 🕐';
+      return;
+    }
+    if(UNLOCK_PASSWORD && val !== UNLOCK_PASSWORD.trim().toLowerCase()){
+      errEl.textContent = 'Intenta de nuevo 💭';
+      return;
+    }
+    mostrarContenido();
+  }
+  document.getElementById('lockPasswordInput')?.addEventListener('keydown', e=>{
+    if(e.key === 'Enter') intentarDesbloquear();
+  });
+
+  if(UNLOCK_AT || UNLOCK_PASSWORD){
+    if(tiempoListo() && !UNLOCK_PASSWORD){
+      mostrarContenido();
+    } else {
+      mostrarCandado();
+    }
+  } else {
+    mostrarContenido();
+  }
 </script>
 
 </body>
