@@ -73,6 +73,10 @@ def generar():
 
     planes = [p.strip() for p in f.getlist("plan") if p.strip()]
     amores = [a.strip() for a in f.getlist("amo") if a.strip()]
+    opciones_ruleta = [r.strip() for r in f.getlist("ruleta") if r.strip()]
+
+    fecha_desbloqueo_raw = f.get("fecha_desbloqueo", "").strip()
+    password_sorpresa = f.get("password_sorpresa", "").strip() or None
 
     if not nombre1 or not nombre2 or not fecha_str or not carta_raw:
         return "Faltan campos obligatorios. Vuelve atrás y complétalos.", 400
@@ -117,12 +121,20 @@ def generar():
         "cupon_texto": cupon_texto,
         "mensaje_cierre": "Te amo.",
         "paleta": paleta,
+        "opciones_ruleta": opciones_ruleta or None,
+        "fecha_desbloqueo_iso": fecha_desbloqueo_raw or None,
+        "password_sorpresa": password_sorpresa,
     }
 
     salida = os.path.join(GENERATED_DIR, f"{slug}.html")
     generar_pagina(datos, fotos_paths, salida, template_dir=TEMPLATE_DIR)
 
     link = f"/p/{slug}"
+    url_completa = request.host_url.rstrip("/") + link
+    import urllib.parse
+    mensaje_wa = urllib.parse.quote(f"Hice esto para ti ❤️ {url_completa}")
+    wa_link = f"https://wa.me/?text={mensaje_wa}"
+
     return f"""
     <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -130,12 +142,19 @@ def generar():
     <style>
       body{{font-family:'Cormorant Garamond',serif;background:#fbf1ea;color:#3a1f1f;
            text-align:center;padding:60px 20px;}}
-      a.btn{{display:inline-block;margin-top:20px;background:#7c2b3f;color:#fff;
-           padding:14px 30px;border-radius:30px;text-decoration:none;font-size:18px;}}
+      a.btn{{display:inline-block;margin-top:16px;padding:14px 30px;border-radius:30px;
+           text-decoration:none;font-size:18px;}}
+      a.btn.principal{{background:#7c2b3f;color:#fff;}}
+      a.btn.whatsapp{{background:#25D366;color:#fff;}}
     </style></head><body>
       <h1>¡Tu página está lista! ❤️</h1>
-      <p>Puedes verla y compartirla desde este link:</p>
-      <a class="btn" href="{link}" target="_blank">Ver mi página</a>
+      <p>Puedes verla y compartirla desde aquí:</p>
+      <div>
+        <a class="btn principal" href="{link}" target="_blank">Ver mi página</a>
+      </div>
+      <div>
+        <a class="btn whatsapp" href="{wa_link}" target="_blank">Compartir por WhatsApp</a>
+      </div>
     </body></html>
     """
 
