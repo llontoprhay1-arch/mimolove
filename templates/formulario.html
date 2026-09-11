@@ -194,6 +194,30 @@
     </fieldset>
 
     <fieldset>
+      <legend>Opciones de la ruleta sorpresa</legend>
+      <p class="hint">Escribe entre 3 y 8 actividades. La ruleta elegirá una al azar.</p>
+      <div id="ruleta-container">
+        <div class="list-item"><input type="text" name="ruleta" value="Cine"></div>
+        <div class="list-item"><input type="text" name="ruleta" value="Cena"></div>
+        <div class="list-item"><input type="text" name="ruleta" value="Helado"></div>
+        <div class="list-item"><input type="text" name="ruleta" value="Picnic"></div>
+        <div class="list-item"><input type="text" name="ruleta" value="Baile"></div>
+      </div>
+      <button type="button" class="add-btn" data-target="ruleta-container" data-name="ruleta">+ Agregar</button>
+    </fieldset>
+
+    <fieldset>
+      <legend>Modo sorpresa (opcional)</legend>
+      <p class="hint">Si llenas alguno de estos, la página se mostrará bloqueada hasta que se cumpla.</p>
+      <label>Desbloquear en una fecha y hora exacta</label>
+      <input type="datetime-local" name="fecha_desbloqueo">
+
+      <label>O con una palabra secreta</label>
+      <input type="text" name="password_sorpresa" placeholder="ej. teamo">
+      <p class="hint">Ojo: es una protección simple, pensada para una sorpresa cariñosa, no para algo 100% infalible.</p>
+    </fieldset>
+
+    <fieldset>
       <legend>Canción y vale</legend>
       <label>Link de YouTube de la canción (opcional)</label>
       <input type="url" name="youtube_url" placeholder="https://youtu.be/...">
